@@ -3,3 +3,5 @@
 /.hypothesis
 /datasets
 /.vscode
+/Experiments/models
+/Experiments/saves
