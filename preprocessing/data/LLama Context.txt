@@ -1,0 +1,43 @@
+There are 8 classes of non-verbal behaviour with sub-classes that you can use in your analysis. In brackets are the short explanations of the meaning of each behaviour:
+- Gaze: DOWN (looking down), DOWN_LEFT (looking down left), DOWN_RIGHT (looking down right), LEFT (looking left), RIGHT (looking right), STRAIGHT AT INTERVIEWER (looking straight at interviewer), UP (looking up), UP_LEFT (looking up left), UP_RIGHT (looking up right).
+- Eyes: PINCH (eyes are squeezed together), BLINK_REPEATEDLY (person blinks more than once in a row), CLOSE (eyes are closed), WIDEN (person widens eyes)
+- Ekman expression: FEAR (the person shows the typical characteristics of the Ekman expression fear), DISGUST (the person shows the typical characteristics of the Ekman expression disgust), JOY (the person shows the typical characteristics of the Ekman expression joy), SURPRISE (the person shows the typical characteristics of the Ekman expression surprise)
+- Smile: DUCHENNE (a smile that reaches the eyes), NON_DUCHENNE (a smile that concentrates only on the mouth)
+- Head: SHAKE (the head is moved alternately to the right and left), NOD (the head is moved down and then up), DOWN_RIGHT (the head is moved down to the right), DOWN_LEFT (the head is moved down to the left), DOWN (the head is moved down), LEFT (the head is moved to the left), RIGHT (the head is moved to the right), STRAIGHT (the head is held straight), UP (the head is moved up)
+- Head Tilt: TILT (the head is tilted to the side)
+-UpperBody: BACKWARD (the upper body is moved backwards), FORWARD (the upper body is moved forwards), DIRECTED_AWAY (the person turns away), SHRUG (the person moves the shoulders up and down), SIDEAWAYS (the person moves the body to the left or right without turning), SLUMP (the person slumps down), STRAIGHT (the person stays straight)
+Speech: SPEECH (the person is speaking), FILLER (the person is saying filler words), BREATH (the person is breathing heavily), LAUGHTER (the person is laughing).
+ 
+For all 8 classes of non-verbal behaviour, the subclass REST is also possible. This indicates that none of the other subclasses were detected.
+
+In addition to the non-verbal behaviour, each row contains information about the person, the persons introspection and the context:
+1. The subject who performed the behaviour (column named 'session'). The 'session' column contains 10 different subjects. VPN01 in the table corresponds to 'Versuchsperson 1' and VPN02 corresponds to 'Versuchsperson 2' and so on.
+2. The situation in which it occurred (column called 'Situation'). In the table, the value 'situation 1' has been abbreviated to 'S1' and the value 'situation 2' to 'S2'. 
+3. The mindedness of the person (column called 'MindednessMean'). Mindedness is defined as the ability to make connections between thoughts, feelings and actions in order to learn the meaning and causes of one's experiences and behaviour. Higher scores in this column indicate a greater ability to be mindful.
+4. The person's gender is male, female or rest.
+5. The introspection of the person. This includes the following:
+- ExperiencedEmotion1 and ExperiencedEmotion2- describes the experienced emotions
+- ShameAwarenessSituation - 'yes' means that the person was aware of feeling ashamed in the situation, 'no' means that the person was not aware of feeling ashamed
+- ShameAwarenessInterview - 'yes' means that the person was aware of feeling ashamed in a later interview, 'no' means that the person was not aware of feeling ashamed
+- RuleDisplay - display rules are rules that define how emotions are communicated; the value "Display_Rule" mean that a display rule has been applied.
+- RelationshipIntention - a person can have the intention to maintain or terminate the relationship with the interviewer, if both intentions are existing it is labeled as 'unclear'
+- InternalEmotion - following internal emotions are possible: REST (none of the following emotions could be detected), SHAME_SHYNESS, UNCLEAR (it is not clear which internal emotion it is), ENJOYMENT, GPA (=general positive affect), SURPRISE
+- ShameDisplay - can be open or not open (regulated shame)
+
+- WITHDRAWAL (The person acknowledges the experience as negative, accepts shame’s message as valid, and tries to withdraw or hide from the situation. The phenomenological experience is negative; emotions include shame, sadness, fear, and anxiety. )
+
+- ATTACK_OTHER (The person may – or may not – acknowledge the negative experience of self, typically does not accept shame’s message, and attempts are made to make someone else feel worse. The phenomenological experience is negative; anger is directed outward, perhaps toward the source of the shaming event.)
+
+- ATTACK_SELF (The person acknowledges the experience as negative, accepts shame’s message as valid, and turns anger inward. The phenomenological experience is negative; emotions include self-directed anger, contempt, or disgust, which magnify the impact of shame.)
+
+- AVOIDANCE (The person typically does not acknowledge the negative experience of self, typically does not accept shame’s message as valid (denial), and attempts are made to distract the self and others from the painful feeling. The phenomenological experience becomes neutral or positive; shame may be disavowed, or overridden with joy or excitement via distractions (e.g., sex).)
+
+- DEPRECIATION (devaluation of the other due to different values)
+
+- STABILIZE_SELF (focus on positive selfconcept,
+act compliant with self-concept)
+
+- REST (no emotion regulation strategy could be identified) 
+
+
+Here is also the previous chat history, (where it is [Avatar] it means that it is the interviewer or the avatar, if not it is the subject):
