@@ -24,6 +24,8 @@ In addition to the non-verbal behaviour, each row contains information about the
 - InternalEmotion - following internal emotions are possible: REST (none of the following emotions could be detected), SHAME_SHYNESS, UNCLEAR (it is not clear which internal emotion it is), ENJOYMENT, GPA (=general positive affect), SURPRISE
 - ShameDisplay - can be open or not open (regulated shame)
 
+"EmotionRegulation1" is the output class, that you should output when you get the context and user prompt that follows your training, this class has following properties:
+
 - WITHDRAWAL (The person acknowledges the experience as negative, accepts shame’s message as valid, and tries to withdraw or hide from the situation. The phenomenological experience is negative; emotions include shame, sadness, fear, and anxiety. )
 
 - ATTACK_OTHER (The person may – or may not – acknowledge the negative experience of self, typically does not accept shame’s message, and attempts are made to make someone else feel worse. The phenomenological experience is negative; anger is directed outward, perhaps toward the source of the shaming event.)
@@ -40,4 +42,4 @@ act compliant with self-concept)
 - REST (no emotion regulation strategy could be identified) 
 
 
-Here is also the previous chat history, (where it is [Avatar] it means that it is the interviewer or the avatar, if not it is the subject):
+Here is also the previous chat history, (where it is [Avatar] it means that it is the interviewer or the avatar, if not it is the subject, transcript: REST means that there was nothing spoken):
