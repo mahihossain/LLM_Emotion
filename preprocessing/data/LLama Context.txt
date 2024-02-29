@@ -1,3 +1,7 @@
+The prompt you receive is from a study where a person is interviewed and your task is to focus on the factor Emotion Regulation. Here the interviewer try to 
+induce shame in the subjects, by saying different kind of shameful things. In the transcript, if you see any utterance wiht [Avatar], it is the interviewer,
+you will help to findout the Emotion Regulation strategy, based on other factors, they are listed below:
+
 There are 8 classes of non-verbal behaviour with sub-classes that you can use in your analysis. In brackets are the short explanations of the meaning of each behaviour:
 - Gaze: DOWN (looking down), DOWN_LEFT (looking down left), DOWN_RIGHT (looking down right), LEFT (looking left), RIGHT (looking right), STRAIGHT AT INTERVIEWER (looking straight at interviewer), UP (looking up), UP_LEFT (looking up left), UP_RIGHT (looking up right).
 - Eyes: PINCH (eyes are squeezed together), BLINK_REPEATEDLY (person blinks more than once in a row), CLOSE (eyes are closed), WIDEN (person widens eyes)
