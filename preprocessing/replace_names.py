@@ -4,7 +4,7 @@ import pandas as pd
 import pdb
 
 
-data_path = '../data/2deep_transcript_cleaned.csv' # TODO: Sayed, is this the correct data path?
+data_path = 'data/2deep_eng.csv' # TODO: Sayed, is this the correct data path?
 df = pd.read_csv(data_path)
 
 
@@ -63,7 +63,7 @@ name_map = {
         'SHRUG': 'The interviewee shrugs, i.e. moves the shoulders up and down.',
         'SIDEWAYS': 'The interviewee moves the body to the left or right without turning.',
         'SLUMP': 'The interviewee slumps down.',
-        'STRAIGHT': 'The interviewee’s upper body stays straight.'
+        'STRAIGHT': 'The interviewee\'s upper body stays straight.'
     },
     'Speech': {
         'SPEECH': 'The interviewee is speaking.',
@@ -148,3 +148,4 @@ df['MindednessMean'] = 'The mindedness score of the interviewee is '+df['Mindedn
 pdb.set_trace()
 
 # TODO: save data frame...
+df.to_csv('data/2deep_eng_cleaned.csv',index=False)
