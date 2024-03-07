@@ -1,4 +1,3 @@
-# %%
 # It is based on LoRA paper: https://arxiv.org/abs/2106.09685
 
 import json
@@ -27,7 +26,6 @@ from transformers import (
 
 from trl import SFTTrainer
 
-# %%
 MODEL_NAME = "../models/Llama-2-7b-chat-hf/"
 
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
@@ -35,7 +33,6 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
-# %%
 def print_trainable_parameters(model):
   """
   Prints the number of trainable parameters in the model.
@@ -50,12 +47,9 @@ def print_trainable_parameters(model):
       f"trainable params: {trainable_params} || all params: {all_param} || trainables%: {100 * trainable_params / all_param}"
   )
 
-# %%
 model.gradient_checkpointing_enable()
 model = prepare_model_for_kbit_training(model)
 
-
-# %%
 config = LoraConfig(
     lora_alpha=16,
     lora_dropout=0.1,
@@ -69,16 +63,6 @@ model.modules()
 model = get_peft_model(model, config)
 print_trainable_parameters(model)
 
-# %%
-data = load_dataset("csv", data_files="../data/train_VPN10.csv")
-
-# %%
-data
-
-# %%
-data["train"][0]
-
-# %%
 def generate_prompt(data_point):
   return f"""
 <human>: {data_point["User"]}
@@ -91,29 +75,19 @@ def generate_and_tokenize_prompt(data_point):
   tokenized_full_prompt = tokenizer(full_prompt, padding=True, truncation=True)
   return tokenized_full_prompt
 
-# %%
-data = data["train"].shuffle().map(generate_and_tokenize_prompt)
-
-# %%
-data
-
-# %%
 import warnings
 
 # Proper regular expression to match the warning message
 warnings.filterwarnings("ignore", message="torch.utils.checkpoint: please pass in use_reentrant=True or use_reentrant=False explicitly")
 
-
-# %%
 training_args = transformers.TrainingArguments(
     output_dir="./saves",
     num_train_epochs=5,
     per_device_train_batch_size=4,
     gradient_accumulation_steps=1,
     optim="paged_adamw_32bit",
-    #save_strategy="epoch",
-    save_strategy=IntervalStrategy.STEPS,  # change this line
-    save_total_limit=1,  # add this line
+    save_strategy=IntervalStrategy.STEPS,
+    save_total_limit=1,
     logging_strategy="epoch",
     logging_steps=1,
     learning_rate=2e-4,
@@ -127,16 +101,21 @@ training_args = transformers.TrainingArguments(
     lr_scheduler_type="cosine",
 )
 
-trainer = transformers.Trainer(
-    model=model,
-    train_dataset=data,
-    args=training_args,
-    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
-)
-model.config.use_cache = False
-trainer.train()
+def fine_tune_model(person_number):
+    data = load_dataset("csv", data_files=f"../data/train_VPN{person_number:02d}.csv")
+    data = data["train"].shuffle().map(generate_and_tokenize_prompt)
 
-# %%
-model.save_pretrained("./models/llama-2-7b-chat-hf-llm-emo-person-10-finetuned-peft/")
+    trainer = transformers.Trainer(
+        model=model,
+        train_dataset=data,
+        args=training_args,
+        data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+    )
+    model.config.use_cache = False
+    trainer.train()
 
+    model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
 
+# Fine-tune the model for all 10 people
+for i in range(1, 11):
+    fine_tune_model(i)
