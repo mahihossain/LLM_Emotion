@@ -113,9 +113,14 @@ def train_predict_and_save(person_number):
     model.config.use_cache = False
     trainer.train()
     
+    # Predict the emotions
     predict(person_number, model)
 
     model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
+    
+    # clean up
+    del model
+    torch.cuda.empty_cache()
 
 
 
@@ -195,4 +200,6 @@ def predict(person_number, model):
 
 # Fine-tune the model for all 10 people
 for i in range(1, 10):
+    # Print the curent person number
+    print(f"Processing person {i:02d}...\n")
     train_predict_and_save(i)
