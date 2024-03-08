@@ -1,0 +1,15 @@
+podman run -it -d  -p 2222:22 --name debian_ssh --security-opt=no-new-privileges --security-opt label=type:nvidia_container_t --hooks-dir=/usr/share/containers/oci/hooks.d/ --group-add keep-groups --runtime=/usr/bin/crun -v /userdata/hossain/:/mnt/workplace:Z docker.io/mahihossain/debian_ssh:latest
+
+podman run -it -d  -p 2222:22 --name nvidia_cuda --security-opt=no-new-privileges --security-opt label=type:nvidia_container_t --hooks-dir=/usr/share/containers/oci/hooks.d/ --cap-drop=ALL  --group-add keep-groups --runtime=/usr/bin/crun -v /userdata/hossain/:/mnt/workplace:Z c2ad35df2ce5
+
+https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags
+
+podman run -it -d  -p 2222:22 --name nvidia_cuda_2 --security-opt=no-new-privileges --security-opt label=type:nvidia_container_t --group-add keep-groups -v /userdata/hossain/:/mnt/workplace:z e53c0e24403e
+
+podman run --device nvidia.com/gpu=all --security-opt label=type:nvidia_container_t --group-add keep-groups --runtime=/usr/bin/crun docker.io/mirrorgooglecontainers/cuda-vector-add:v0.1
+
+podman run -it -d --device nvidia.com/gpu=all --name torch_23 --security-opt label=type:nvidia_container_t --group-add keep-groups -v /userdata/home/hossain/:/mnt/workplace:Z 9ff159797e3d
+
+podman run -it -d --security-opt=no-new-privileges --device nvidia.com/gpu=all --name torch_23 --security-opt label=type:nvidia_container_t --group-add keep-groups -v /userdata/home/hossain/:/mnt/workplace:z 9ff159797e3d 
+
+podman run -it -d --security-opt=no-new-privileges --name torch_23 --security-opt label=type:nvidia_container_t --group-add keep-groups -v /userdata/home/hossain/:/mnt/workplace 9ff159797e3d 
