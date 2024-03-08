@@ -3,6 +3,7 @@
 import os
 os.environ['HF_TOKEN'] = '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'
 
+import subprocess
 import torch
 import pandas as pd
 from collections import Counter
@@ -82,7 +83,7 @@ warnings.filterwarnings("ignore", message="torch.utils.checkpoint: please pass i
 training_args = transformers.TrainingArguments(
     output_dir="./saves",
     num_train_epochs=5,
-    per_device_train_batch_size=4,
+    per_device_train_batch_size=16,
     gradient_accumulation_steps=1,
     optim="paged_adamw_32bit",
     save_strategy=IntervalStrategy.STEPS,
@@ -198,10 +199,20 @@ def predict(person_number, model):
     df_copy = df_copy[['EmotionRegulation1']]
     df_copy = df_copy.rename(columns={'EmotionRegulation1': 'Predicted'})
     df_copy['GroundTruth'] = df['EmotionRegulation1']
-    df_copy.to_csv(f'../data/predictions/llama_prediction_person_{person_number:02d}.csv', index=False)
+    csv_file = f'../data/predictions/llama_prediction_person_{person_number:02d}.csv'
+    df_copy.to_csv(csv_file, index=False)
+
+    # Commit and push the new CSV file to Git
+    try:
+        subprocess.run(['git', 'add', csv_file], check=True)
+        subprocess.run(['git', 'commit', '-m', f'Add prediction for person {person_number:02d}'], check=True)
+        subprocess.run(['git', 'push'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f'Error occurred while pushing to Git: {e}')
+        print('Continuing with the next person...')
 
 # Fine-tune the model for all 10 people
-for i in range(1, 10):
-    # Print the curent person number
+for i in tqdm(range(1, 10), desc="Processing people", unit="person"):
+    # Print the current person number
     print(f"Processing person {i:02d}...\n")
     train_predict_and_save(i)
