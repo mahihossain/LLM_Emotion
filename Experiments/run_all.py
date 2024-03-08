@@ -4,6 +4,7 @@ import os
 os.environ['HF_TOKEN'] = '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'
 
 import subprocess
+import bitsandbytes as bnb
 import torch
 import pandas as pd
 from collections import Counter
