@@ -101,8 +101,7 @@ training_args = transformers.TrainingArguments(
     lr_scheduler_type="cosine",
 )
 
-def train_predict_and_save(person_number):
-    global model
+def train_predict_and_save(person_number, model):
     data = load_dataset("csv", data_files=f"../data/train_VPN{person_number:02d}.csv")
     data = data["train"].shuffle().map(generate_and_tokenize_prompt)
 
@@ -118,13 +117,9 @@ def train_predict_and_save(person_number):
     # Predict the emotions
     predict(person_number, model)
     
-    model = model.cpu()
-
-    model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
     
-    # clean up
-    del model
-    torch.cuda.empty_cache()
+    model.cpu()
+    model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
 
 
 
@@ -214,6 +209,8 @@ def predict(person_number, model):
 
 # Fine-tune the model for all 10 people
 for i in tqdm(range(1, 10), desc="Processing people", unit="person"):
-    # Print the current person number
     print(f"Processing person {i:02d}...\n")
-    train_predict_and_save(i)
+    train_predict_and_save(i, model)
+    # model = model.cpu()
+    # del model
+    # torch.cuda.empty_cache()
