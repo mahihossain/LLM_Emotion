@@ -102,6 +102,7 @@ training_args = transformers.TrainingArguments(
 )
 
 def train_predict_and_save(person_number):
+    global model
     data = load_dataset("csv", data_files=f"../data/train_VPN{person_number:02d}.csv")
     data = data["train"].shuffle().map(generate_and_tokenize_prompt)
 
