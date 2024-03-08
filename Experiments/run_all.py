@@ -194,5 +194,5 @@ def predict(person_number, model):
     df_copy.to_csv(f'../data/predictions/llama_prediction_person_{person_number:02d}.csv', index=False)
 
 # Fine-tune the model for all 10 people
-for i in range(2, 11):
+for i in range(1, 10):
     train_predict_and_save(i)
