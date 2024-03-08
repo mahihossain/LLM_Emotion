@@ -115,6 +115,8 @@ def train_predict_and_save(person_number):
     
     # Predict the emotions
     predict(person_number, model)
+    
+    model = model.cpu()
 
     model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
     
