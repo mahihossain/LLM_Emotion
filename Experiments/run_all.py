@@ -1,6 +1,8 @@
 # It is based on LoRA paper: https://arxiv.org/abs/2106.09685
 
 import os
+os.environ['HF_TOKEN'] = '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'
+
 import torch
 import pandas as pd
 from collections import Counter
@@ -23,10 +25,10 @@ from peft import (
 )
 import transformers
 
-MODEL_NAME = "../models/Llama-2-7b-chat-hf/"
+MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
 
-model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto", cache_dir="../models")
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir="../models", trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
@@ -98,7 +100,7 @@ training_args = transformers.TrainingArguments(
     lr_scheduler_type="cosine",
 )
 
-def fine_tune_model(person_number):
+def train_predict_and_save(person_number):
     data = load_dataset("csv", data_files=f"../data/train_VPN{person_number:02d}.csv")
     data = data["train"].shuffle().map(generate_and_tokenize_prompt)
 
@@ -110,10 +112,10 @@ def fine_tune_model(person_number):
     )
     model.config.use_cache = False
     trainer.train()
+    
+    predict(person_number, model)
 
     model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
-    
-    return model
 
 
 
@@ -121,7 +123,7 @@ def fine_tune_model(person_number):
 emotions = ['REST', 'DEPRECIATION', 'AVOIDANCE', 'STABILIZE_SELF', 'ATTACK_OTHER', 'WITHDRAWAL', 'ATTACK_SELF']
 
 # Define the function to process each person
-def process_person(person_number, model):
+def predict(person_number, model):
     # Load the test data
     df = pd.read_csv(f'../data/test_VPN{person_number:02d}.csv')
 
@@ -193,5 +195,4 @@ def process_person(person_number, model):
 
 # Fine-tune the model for all 10 people
 for i in range(2, 11):
-    model = fine_tune_model(i)
-    process_person(i, model)
+    train_predict_and_save(i)
