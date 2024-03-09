@@ -144,7 +144,7 @@ def predict(person_number):
     # Set the generation config
     generation_config = model.generation_config
     generation_config.max_new_tokens = 200
-    generation_config.temperature = 0
+    generation_config.temperature = 0.0
     generation_config.top_p = 0.7
     generation_config.num_return_sequences = 1
     generation_config.pad_token_id = tokenizer.eos_token_id
@@ -207,7 +207,7 @@ def predict(person_number):
 # Fine-tune the model for all 10 people
 for i in tqdm(range(1, 10), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
-    train(i, model)
+   # train(i, model)
     predict(i)
     # model = model.cpu()
     # del model
