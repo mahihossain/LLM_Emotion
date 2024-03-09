@@ -83,8 +83,8 @@ warnings.filterwarnings("ignore", message="torch.utils.checkpoint: please pass i
 
 training_args = transformers.TrainingArguments(
     output_dir="./saves",
-    num_train_epochs=5,
-    per_device_train_batch_size=14,
+    num_train_epochs=1,
+    per_device_train_batch_size=16,
     gradient_accumulation_steps=1,
     optim="paged_adamw_32bit",
     save_strategy=IntervalStrategy.STEPS,
@@ -102,7 +102,7 @@ training_args = transformers.TrainingArguments(
     lr_scheduler_type="cosine",
 )
 
-def train_predict_and_save(person_number, model):
+def train(person_number, model):
     data = load_dataset("csv", data_files=f"../data/train_VPN{person_number:02d}.csv")
     data = data["train"].shuffle().map(generate_and_tokenize_prompt)
 
@@ -115,10 +115,6 @@ def train_predict_and_save(person_number, model):
     model.config.use_cache = False
     trainer.train()
     
-    # Predict the emotions
-    predict(person_number, model)
-    
-    
     model.cpu()
     model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
 
@@ -128,12 +124,12 @@ def train_predict_and_save(person_number, model):
 emotions = ['REST', 'DEPRECIATION', 'AVOIDANCE', 'STABILIZE_SELF', 'ATTACK_OTHER', 'WITHDRAWAL', 'ATTACK_SELF']
 
 # Define the function to process each person
-def predict(person_number, model):
+def predict(person_number):
     # Load the test data
     df = pd.read_csv(f'../data/test_VPN{person_number:02d}.csv')
 
     # Load the model
-    PEFT_MODEL = model
+    PEFT_MODEL = f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/"
     config = PeftConfig.from_pretrained(PEFT_MODEL)
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
@@ -211,7 +207,8 @@ def predict(person_number, model):
 # Fine-tune the model for all 10 people
 for i in tqdm(range(1, 10), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
-    train_predict_and_save(i, model)
+    train(i, model)
+    predict(i)
     # model = model.cpu()
     # del model
     # torch.cuda.empty_cache()
