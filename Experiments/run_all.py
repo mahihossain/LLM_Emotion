@@ -83,7 +83,7 @@ warnings.filterwarnings("ignore", message="torch.utils.checkpoint: please pass i
 
 training_args = transformers.TrainingArguments(
     output_dir="./saves",
-    num_train_epochs=1,
+    num_train_epochs=5,
     per_device_train_batch_size=16,
     gradient_accumulation_steps=1,
     optim="paged_adamw_32bit",
@@ -114,8 +114,7 @@ def train(person_number, model):
     )
     model.config.use_cache = False
     trainer.train()
-    
-    model.cpu()
+    # Save the model
     model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
 
 
@@ -144,7 +143,7 @@ def predict(person_number):
     # Set the generation config
     generation_config = model.generation_config
     generation_config.max_new_tokens = 200
-    generation_config.temperature = 0.0
+    generation_config.temperature = 0.01
     generation_config.top_p = 0.7
     generation_config.num_return_sequences = 1
     generation_config.pad_token_id = tokenizer.eos_token_id
@@ -207,7 +206,7 @@ def predict(person_number):
 # Fine-tune the model for all 10 people
 for i in tqdm(range(1, 10), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
-   # train(i, model)
+    train(i, model)
     predict(i)
     # model = model.cpu()
     # del model
