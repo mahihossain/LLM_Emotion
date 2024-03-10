@@ -121,6 +121,6 @@ df_copy = df_copy.rename(columns={'EmotionRegulation1': 'Predicted'})
 df_copy['GroundTruth'] = df['EmotionRegulation1']
 
 # Save the df_copy to a csv file as prediction_person_10.csv
-df_copy.to_csv('../data/predictions/gemma_prediction_person_10.csv', index=False)
+df_copy.to_csv('../data/predictions/gemma/gemma_prediction_person_10.csv', index=False)
 
 
