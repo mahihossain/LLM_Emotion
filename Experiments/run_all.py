@@ -135,7 +135,7 @@ def predict(person_number):
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
         return_dict=True,
-        device_map="auto",
+        device_map={0: "cuda:0"},
         trust_remote_code=True
     )
     tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
@@ -160,9 +160,11 @@ def predict(person_number):
         <context>: {row['context']}
         <assistant>:
         """.strip()
+        
+        device = torch.device("cuda:0")  # Use the first GPU
 
         # Generate the model's response
-        encoding = tokenizer(prompt, return_tensors="pt")
+        encoding = tokenizer(prompt, return_tensors="pt").to(device)
         with torch.inference_mode():
             outputs = model.generate(
                 input_ids = encoding.input_ids,
@@ -202,7 +204,7 @@ def predict(person_number):
         print('Continuing with the next person...')
 
 # Fine-tune the model for all 10 people
-for i in tqdm(range(2, 10), desc="Processing people", unit="person"):
+for i in tqdm(range(3, 10), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
     train(i, model)
     predict(i)
