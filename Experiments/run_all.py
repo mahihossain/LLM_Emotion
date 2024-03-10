@@ -149,10 +149,6 @@ def predict(person_number):
     generation_config.pad_token_id = tokenizer.eos_token_id
     generation_config.eos_token_id = tokenizer.eos_token_id
 
-    # If cuda is available, use it
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
-
     # Iterate over the dataset
     df_copy = df.copy()
     for index, row in tqdm(df.iterrows(), total=df.shape[0]):
@@ -164,7 +160,7 @@ def predict(person_number):
         """.strip()
 
         # Generate the model's response
-        encoding = tokenizer(prompt, return_tensors="pt").to(device)
+        encoding = tokenizer(prompt, return_tensors="pt")
         with torch.inference_mode():
             outputs = model.generate(
                 input_ids = encoding.input_ids,
@@ -204,7 +200,7 @@ def predict(person_number):
         print('Continuing with the next person...')
 
 # Fine-tune the model for all 10 people
-for i in tqdm(range(1, 10), desc="Processing people", unit="person"):
+for i in tqdm(range(1, 2), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
     train(i, model)
     predict(i)
