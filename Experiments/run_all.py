@@ -131,13 +131,11 @@ def predict(person_number):
     PEFT_MODEL = f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/"
     config = PeftConfig.from_pretrained(PEFT_MODEL)
     
-    device = torch.device("cuda:0")  # Use the first GPU
-    print(f"Using device: {device}")
     
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
         return_dict=True,
-        device_map={0: "cuda:0"},
+        device_map="auto",
         trust_remote_code=True
     )
     tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
@@ -164,7 +162,7 @@ def predict(person_number):
         """.strip()
 
         # Generate the model's response
-        encoding = tokenizer(prompt, return_tensors="pt").to(device)
+        encoding = tokenizer(prompt, return_tensors="pt")
         with torch.inference_mode():
             outputs = model.generate(
                 input_ids = encoding.input_ids,
@@ -206,7 +204,7 @@ def predict(person_number):
 # Fine-tune the model for all 10 people
 for i in tqdm(range(1, 2), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
-    train(i, model)
+    #train(i, model)
     predict(i)
     # model = model.cpu()
     # del model
