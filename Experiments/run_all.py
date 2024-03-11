@@ -125,9 +125,6 @@ emotions = ['REST', 'DEPRECIATION', 'AVOIDANCE', 'STABILIZE_SELF', 'ATTACK_OTHER
 # Define the function to process each person
 def predict(person_number):
     
-    # Set CUDA_VISIBLE_DEVICES to 0
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    
     # Load the test data
     df = pd.read_csv(f'../data/test_VPN{person_number:02d}.csv')
 
@@ -218,12 +215,10 @@ def predict(person_number):
         print('Continuing with the next person...')
 
 # Fine-tune the model for all 10 people
-for i in tqdm(range(3, 4), desc="Processing people", unit="person"):
+for i in tqdm(range(4, 10), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
-    #train(i, model)
-    predict(i)
-    # Reset CUDA_VISIBLE_DEVICES to use all GPUs
-    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+    train(i, model)
+    #predict(i)
     # model = model.cpu()
     # del model
     # torch.cuda.empty_cache()
