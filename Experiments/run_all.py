@@ -132,22 +132,22 @@ def predict(person_number):
     config = PeftConfig.from_pretrained(PEFT_MODEL)
     
     
-    # model = AutoModelForCausalLM.from_pretrained(
-    #     config.base_model_name_or_path,
-    #     return_dict=True,
-    #     device_map="auto",
-    #     trust_remote_code=True
-    # )
-    
-    device = torch.device("cuda:0")  # Use the first GPU
-
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
         return_dict=True,
+        device_map="auto",
         trust_remote_code=True
     )
+    
+    # device = torch.device("cuda:0")  # Use the first GPU
 
-    model = model.to(device)  # Move the model to the GPU
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     config.base_model_name_or_path,
+    #     return_dict=True,
+    #     trust_remote_code=True
+    # )
+
+    # model = model.to(device)  # Move the model to the GPU
     
     tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
     tokenizer.pad_token = tokenizer.eos_token
@@ -174,7 +174,7 @@ def predict(person_number):
         
 
         # Generate the model's response
-        encoding = tokenizer(prompt, return_tensors="pt").to(device)
+        encoding = tokenizer(prompt, return_tensors="pt").to("cuda")
         with torch.inference_mode():
             outputs = model.generate(
                 input_ids = encoding.input_ids,
