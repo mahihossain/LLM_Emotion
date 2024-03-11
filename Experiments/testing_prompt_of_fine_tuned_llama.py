@@ -13,13 +13,15 @@ import pandas as pd
 
 from collections import Counter
 from tqdm import tqdm
+import subprocess
+import os
 
 # %%
 # load the test data
-df = pd.read_csv('../data/test_VPN10.csv')
+df = pd.read_csv('../data/test_VPN03.csv')
 
 # %%
-PEFT_MODEL = "./models/llama-2-7b-chat-hf-llm-emo-person-10-finetuned-peft/"
+PEFT_MODEL = "./models/llama-2-7b-chat-hf-llm-emo-person-03-finetuned-peft/"
 
 config = PeftConfig.from_pretrained(PEFT_MODEL)
 model = AutoModelForCausalLM.from_pretrained(
@@ -121,6 +123,16 @@ df_copy = df_copy.rename(columns={'EmotionRegulation1': 'Predicted'})
 df_copy['GroundTruth'] = df['EmotionRegulation1']
 
 # Save the df_copy to a csv file as prediction_person_10.csv
-df_copy.to_csv('../data/predictions/llama_prediction_person_10.csv', index=False)
+df_copy.to_csv('../data/predictions/llama_prediction_person_03.csv', index=False)
 
+csv_file = '../data/predictions/llama_prediction_person_03.csv'
+
+ # Commit and push the new CSV file to Git
+try:
+    subprocess.run(['git', 'add', csv_file], check=True)
+    subprocess.run(['git', 'commit', '-m', f'Add prediction for person 03'], check=True)
+    subprocess.run(['git', 'push'], check=True)
+except subprocess.CalledProcessError as e:
+    print(f'Error occurred while pushing to Git: {e}')
+    print('Continuing with the next person...')
 
