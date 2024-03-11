@@ -132,12 +132,23 @@ def predict(person_number):
     config = PeftConfig.from_pretrained(PEFT_MODEL)
     
     
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     config.base_model_name_or_path,
+    #     return_dict=True,
+    #     device_map="auto",
+    #     trust_remote_code=True
+    # )
+    
+    device = torch.device("cuda:0")  # Use the first GPU
+
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
         return_dict=True,
-        device_map={0: "cuda:0"},
         trust_remote_code=True
     )
+
+    model = model.to(device)  # Move the model to the GPU
+    
     tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
     tokenizer.pad_token = tokenizer.eos_token
     model = PeftModel.from_pretrained(model, PEFT_MODEL)
@@ -161,7 +172,6 @@ def predict(person_number):
         <assistant>:
         """.strip()
         
-        device = torch.device("cuda:0")  # Use the first GPU
 
         # Generate the model's response
         encoding = tokenizer(prompt, return_tensors="pt").to(device)
@@ -204,9 +214,9 @@ def predict(person_number):
         print('Continuing with the next person...')
 
 # Fine-tune the model for all 10 people
-for i in tqdm(range(3, 10), desc="Processing people", unit="person"):
+for i in tqdm(range(2, 4), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
-    train(i, model)
+    #train(i, model)
     predict(i)
     # model = model.cpu()
     # del model
