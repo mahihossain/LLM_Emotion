@@ -14,6 +14,9 @@ import pandas as pd
 from collections import Counter
 from tqdm import tqdm
 
+import os
+os.environ['HF_TOKEN'] = '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'
+
 # %%
 # load the test data
 df = pd.read_csv('../data/test_VPN10.csv')
