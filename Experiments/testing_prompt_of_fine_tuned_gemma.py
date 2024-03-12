@@ -19,10 +19,10 @@ os.environ['HF_TOKEN'] = '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'
 
 # %%
 # load the test data
-df = pd.read_csv('../data/test_VPN10.csv')
+df = pd.read_csv('../data/test_VPN01.csv')
 
 # %%
-PEFT_MODEL = "./models/gemma-7b-llm-emo-person-10-finetuned-peft/"
+PEFT_MODEL = "./models/gemma-7b-llm-emo-person-01-finetuned-peft/"
 
 config = PeftConfig.from_pretrained(PEFT_MODEL)
 model = AutoModelForCausalLM.from_pretrained(
@@ -124,6 +124,6 @@ df_copy = df_copy.rename(columns={'EmotionRegulation1': 'Predicted'})
 df_copy['GroundTruth'] = df['EmotionRegulation1']
 
 # Save the df_copy to a csv file as prediction_person_10.csv
-df_copy.to_csv('../data/predictions/gemma/gemma_prediction_person_10.csv', index=False)
+df_copy.to_csv('../data/predictions/gemma/gemma_prediction_person_01.csv', index=False)
 
 

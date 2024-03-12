@@ -70,7 +70,7 @@ model = get_peft_model(model, config)
 print_trainable_parameters(model)
 
 # %%
-data = load_dataset("csv", data_files="../data/train_VPN10.csv")
+data = load_dataset("csv", data_files="../data/train_VPN01.csv")
 
 # %%
 data
@@ -137,6 +137,6 @@ model.config.use_cache = False
 trainer.train()
 
 # %%
-model.save_pretrained("./models/gemma-7b-llm-emo-person-10-finetuned-peft/")
+model.save_pretrained("./models/gemma-7b-llm-emo-person-01-finetuned-peft/")
 
 
