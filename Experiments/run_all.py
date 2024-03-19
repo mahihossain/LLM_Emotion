@@ -27,7 +27,7 @@ from peft import (
 )
 import transformers
 
-MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
+MODEL_NAME = "google/gemma-7b"
 
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto", cache_dir="../models")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir="../models", trust_remote_code=True)
@@ -215,7 +215,7 @@ def predict(person_number):
         print('Continuing with the next person...')
 
 # Fine-tune the model for all 10 people
-for i in tqdm(range(4, 10), desc="Processing people", unit="person"):
+for i in tqdm(range(1, 11), desc="Processing people", unit="person"):
     print(f"Processing person {i:02d}...\n")
     train(i, model)
     #predict(i)
