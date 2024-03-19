@@ -115,7 +115,7 @@ def train(person_number, model):
     model.config.use_cache = False
     trainer.train()
     # Save the model
-    model.save_pretrained(f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/")
+    model.save_pretrained(f"./models/gemma-llm-emo-person-{person_number:02d}-finetuned-peft/")
 
 
 
@@ -129,7 +129,7 @@ def predict(person_number):
     df = pd.read_csv(f'../data/test_VPN{person_number:02d}.csv')
 
     # Load the model
-    PEFT_MODEL = f"./models/llama-2-7b-chat-hf-llm-emo-person-{person_number:02d}-finetuned-peft/"
+    PEFT_MODEL = f"./models/gemma-llm-emo-person-{person_number:02d}-finetuned-peft/"
     config = PeftConfig.from_pretrained(PEFT_MODEL)
     
     
@@ -202,7 +202,7 @@ def predict(person_number):
     df_copy = df_copy[['EmotionRegulation1']]
     df_copy = df_copy.rename(columns={'EmotionRegulation1': 'Predicted'})
     df_copy['GroundTruth'] = df['EmotionRegulation1']
-    csv_file = f'../data/predictions/llama_prediction_person_{person_number:02d}.csv'
+    csv_file = f'../data/predictions/gemma_prediction_person_{person_number:02d}.csv'
     df_copy.to_csv(csv_file, index=False)
 
     # Commit and push the new CSV file to Git
