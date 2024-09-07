@@ -15,7 +15,7 @@ from collections import Counter
 from tqdm import tqdm
 
 import os
-os.environ['HF_TOKEN'] = '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'
+os.environ['HF_TOKEN'] = 'put your token here!'
 
 # %%
 # load the test data
