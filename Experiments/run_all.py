@@ -1,7 +1,7 @@
 # It is based on LoRA paper: https://arxiv.org/abs/2106.09685
 
 import os
-os.environ['HF_TOKEN'] = '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'
+os.environ['HF_TOKEN'] = 'put your token here!'
 
 import subprocess
 import bitsandbytes as bnb
